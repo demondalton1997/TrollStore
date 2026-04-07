@@ -5,7 +5,7 @@ ifdef TROLLSTORE_LITE
 HELPER_NAME = trollstorehelper_lite
 else
 HELPER_NAME = trollstorehelper
-TARGET_CODESIGN = ../Exploits/fastPathSign/fastPathSign
+TARGET_CODESIGN = ldid
 endif
 
 include $(THEOS)/makefiles/common.mk
@@ -16,8 +16,8 @@ $(HELPER_NAME)_FILES = $(wildcard *.m) $(wildcard ../Shared/*.m) $(wildcard ../C
 
 ifndef TROLLSTORE_LITE
 $(HELPER_NAME)_FILES += ../Exploits/fastPathSign/src/coretrust_bug.c ../Exploits/fastPathSign/src/codesign.m
-$(HELPER_NAME)_CODESIGN_FLAGS = --entitlements entitlements.plist
-$(HELPER_NAME)_LDFLAGS = -L../ChOma/external/ios -lcrypto
+$(HELPER_NAME)_CODESIGN_FLAGS = -Sentitlements.plist
+$(HELPER_NAME)_LDFLAGS = -Wl,-undefined,dynamic_lookup -L../ChOma/external/ios -lcrypto
 else
 $(HELPER_NAME)_CODESIGN_FLAGS = -Sentitlements.plist
 endif

@@ -11,7 +11,7 @@ ARCHS = arm64
 endif
 
 ifneq ($(LEGACY_CT_BUG),1)
-TARGET_CODESIGN = ../Exploits/fastPathSign/fastPathSign
+TARGET_CODESIGN = ldid
 endif
 
 include $(THEOS)/makefiles/common.mk
@@ -27,7 +27,7 @@ ifeq ($(LEGACY_CT_BUG),1)
 TrollStorePersistenceHelper_CODESIGN_FLAGS = -Sentitlements.plist -K../legacy.p12
 TrollStorePersistenceHelper_CFLAGS += -DLEGACY_CT_BUG=1
 else
-TrollStorePersistenceHelper_CODESIGN_FLAGS = --entitlements entitlements.plist
+TrollStorePersistenceHelper_CODESIGN_FLAGS = -Sentitlements.plist
 endif
 
 ifeq ($(EMBEDDED_ROOT_HELPER),1)
@@ -37,4 +37,5 @@ TrollStorePersistenceHelper_LIBRARIES += archive
 TrollStorePersistenceHelper_PRIVATE_FRAMEWORKS += SpringBoardServices BackBoardServices FrontBoardServices
 endif
 
+TrollStorePersistenceHelper_LDFLAGS += -Wl,-undefined,dynamic_lookup
 include $(THEOS_MAKE_PATH)/application.mk
